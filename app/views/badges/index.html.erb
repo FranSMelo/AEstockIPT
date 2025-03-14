@@ -1,47 +1,334 @@
-<p style="color: green"><%= notice %></p>
+<!-- Badges Index Page -->
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Badges</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <!-- AOS Animation Library -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3f37c9;
+      --success-color: #4cc9f0;
+      --warning-color: #f72585;
+      --info-color: #4895ef;
+      --light-color: #f8f9fa;
+      --dark-color: #212529;
+    }
+    
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .page-header {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      border-radius: 0 0 20px 20px;
+      padding: 2rem 0;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .badge-card {
+      border: none;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      height: 100%;
+    }
+    
+    .badge-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+    
+    .badge-img-container {
+      height: 250px;
+      overflow: hidden;
+      background-color: #f5f5f5;
+      position: relative;
+    }
+    
+    .badge-img {
+      height: 100%;
+      width: 100%;
+      object-fit: contain;
+      transition: all 0.5s ease;
+    }
+    
+    .badge-card:hover .badge-img {
+      transform: scale(1.05);
+    }
+    
+    .badge-category {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: rgba(67, 97, 238, 0.85);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      backdrop-filter: blur(3px);
+    }
+    
+    .badge-price {
+      background-color: var(--success-color);
+      color: white;
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-weight: bold;
+      margin-top: 0.5rem;
+    }
+    
+    .badge-title {
+      font-weight: 600;
+      color: var(--dark-color);
+      margin-top: 0.5rem;
+    }
+    
+    .actions-container {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    
+    .btn-action {
+      flex: 1;
+      border-radius: 6px;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 0.5rem 0;
+    }
+    
+    .filter-container {
+      background-color: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
+    }
+    
+    .filter-title {
+      font-weight: 600;
+      color: var(--dark-color);
+      margin-bottom: 1rem;
+    }
+    
+    .filter-form {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .filter-form select {
+      border-radius: 6px;
+      border: 1px solid #ced4da;
+      padding: 0.5rem 1rem;
+      flex-grow: 1;
+    }
+    
+    .filter-form .btn {
+      border-radius: 6px;
+      padding: 0.5rem 1.5rem;
+    }
+    
+    .btn-new-badge {
+      background: linear-gradient(135deg, var(--success-color), #56cfe1);
+      border: none;
+      border-radius: 6px;
+      padding: 0.75rem 1.5rem;
+      color: white;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(76, 201, 240, 0.3);
+    }
+    
+    .btn-new-badge:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(76, 201, 240, 0.4);
+    }
+    
+    .empty-result {
+      text-align: center;
+      padding: 3rem;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .notice-alert {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1050;
+      min-width: 300px;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      animation: slideIn 0.5s forwards;
+    }
+    
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .filter-form {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .page-header {
+        text-align: center;
+      }
+      
+      .page-header .row {
+        flex-direction: column;
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
 
-<% content_for :title, "Badges" %>
-
-<div class="container mt-5">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Badges</h1>
-    <%= link_to "New badge", new_badge_path, class: "btn btn-success" %>
-  </div>
-
-  <!-- Filtro por Categoria -->
-  <%= form_with url: badges_path, method: :get, local: true, class: "mb-4" do |form| %>
-    <div class="form-row align-items-center">
-      <div class="col-auto">
-        <%= form.label :category_id, "Filtrar por Categoria:", class: "mr-2" %>
-      </div>
-      <div class="col-auto">
-        <%= form.collection_select :category_id, Category.all, :id, :name, { include_blank: "Todas as Categorias" }, { class: "form-control" } %>
-      </div>
-      <div class="col-auto">
-        <%= form.submit "Filtrar", class: "btn btn-info" %>
-      </div>
+  <% if notice %>
+    <div class="notice-alert alert alert-success alert-dismissible fade show" role="alert">
+      <%= notice %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
   <% end %>
 
-  <!-- Lista de Badges -->
-  <div class="row">
-    <% @badges.each do |badge| %>
-      <div class="col-md-4 mb-4">
-        <div class="card h-100 shadow-sm">
-        <img src="<%= badge.image_url %>" class="card-img-top" alt="<%= badge.name %>" style="height: 400px; width: 100%; object-fit: contain;">          <div class="card-body d-flex flex-column">
-            <h5 class="card-title"><%= badge.name %></h5>
-            <p class="card-text"><strong>Categoria:</strong> <%= badge.category.name %></p>
-            <p class="card-text"><strong>Preço:</strong> <%= number_to_currency(badge.price, unit: "€", separator: ",", delimiter: ".", format: "%n %u") %></p>
-            <div class="mt-auto">
-              <div class="btn-group w-100">
-                <%= link_to 'Mostrar', badge, class: "btn btn-sm btn-outline-primary flex-fill" %>
-                <%= link_to 'Editar', edit_badge_path(badge), class: "btn btn-sm btn-outline-warning flex-fill" %>
-                <%= link_to 'Excluir', badge, method: :delete, data: { confirm: 'Tem certeza?' }, class: "btn btn-sm btn-outline-danger flex-fill" %>
+  <div class="page-header">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <h1 class="display-4 fw-bold"><i class="fas fa-medal me-2"></i>Badges</h1>
+          <p class="lead">Explore nossa coleção exclusiva de badges.</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+          <%= link_to new_badge_path, class: "btn-new-badge", data: { aos: "fade-left" } do %>
+            <i class="fas fa-plus me-2"></i>Novo Badge
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Filtro por Categoria -->
+    <div class="filter-container" data-aos="fade-up">
+      <h5 class="filter-title"><i class="fas fa-filter me-2"></i>Filtrar Badges</h5>
+      <%= form_with url: badges_path, method: :get, local: true, class: "filter-form" do |form| %>
+        <%= form.collection_select :category_id, Category.all, :id, :name, { include_blank: "Todas as Categorias" }, { class: "form-select" } %>
+        <%= form.submit "Aplicar Filtro", class: "btn btn-primary" %>
+        <% if params[:category_id].present? %>
+          <%= link_to badges_path, class: "btn btn-outline-secondary" do %>
+            <i class="fas fa-times me-1"></i>Limpar
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <!-- Lista de Badges -->
+    <% if @badges.any? %>
+      <div class="row g-4">
+        <% @badges.each_with_index do |badge, index| %>
+          <div class="col-md-6 col-lg-4" data-aos="fade-up"<%= index * 100 %>" data-aos-duration="200">
+            <div class="badge-card">
+              <div class="badge-img-container">
+                <img src="<%= badge.image_url %>" class="badge-img" alt="<%= badge.name %>">
+                <span class="badge-category"><%= badge.category.name %></span>
+              </div>
+              <div class="card-body d-flex flex-column p-3">
+                <h5 class="badge-title"><%= badge.name %></h5>
+                <span class="badge-price"><%= number_to_currency(badge.price, unit: "€", separator: ",", delimiter: ".", format: "%n %u") %></span>
+                
+                <div class="actions-container mt-auto">
+                  <%= link_to badge, class: "btn-action btn btn-outline-primary" do %>
+                    <i class="fas fa-eye"></i> Ver
+                  <% end %>
+                  
+                  <%= link_to edit_badge_path(badge), class: "btn-action btn btn-outline-warning" do %>
+                    <i class="fas fa-pen"></i> Editar
+                  <% end %>
+                  
+                  <%= link_to badge, method: :delete, data: { confirm: 'Tem certeza que deseja excluir este badge?' }, class: "btn-action btn btn-outline-danger" do %>
+                    <i class="fas fa-trash"></i> Excluir
+                  <% end %>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="empty-result" data-aos="fade-up">
+        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+        <h3>Nenhum badge encontrado</h3>
+        <p class="text-muted">Tente remover os filtros ou adicione novos badges.</p>
       </div>
     <% end %>
   </div>
-</div>
+
+  <!-- Bootstrap 5 JS Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- AOS Animation Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  
+  <script>
+    // Inicializar animações AOS
+    document.addEventListener('DOMContentLoaded', () => {
+      AOS.init({
+        once: false, 
+        duration: 200,
+        easing: 'ease-in-out'
+      });
+      
+      // Auto-fechamento das alertas após 5 segundos
+      setTimeout(() => {
+        const alerts = document.querySelectorAll('.notice-alert');
+        alerts.forEach(alert => {
+          const bsAlert = new bootstrap.Alert(alert);
+          bsAlert.close();
+        });
+      }, 5000);
+      
+      // Adicionar comportamento de clique automático para filtros
+      const categorySelect = document.querySelector('select[name="category_id"]');
+      if (categorySelect) {
+        categorySelect.addEventListener('change', () => {
+          // Apenas enviar o formulário automaticamente se não estiver no modo mobile
+          if (window.innerWidth > 768) {
+            categorySelect.closest('form').submit();
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
