@@ -1,0 +1,50 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Badges" %>
+
+<h1>Badges</h1>
+
+<div id="badges">
+  <% @badges.each do |badge| %>
+    <%= render badge %>
+    <p>
+      <%= link_to "Show this badge", badge %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New badge", new_badge_path %>
+
+<h2>Form</h2>
+<%= form_with url: badges_path, method: :get do |form| %>
+  <%= form.collection_select :category_id, Category.all, :id, :name, include_blank: "Todas as Categorias" %>
+  <%= form.submit "Filtrar" %>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Descrição</th>
+      <th>Preço</th>
+      <th>Imagem</th>
+      <th>Categoria</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @badges.each do |badge| %>
+      <tr>
+        <td><%= badge.name %></td>
+        <td><%= badge.description %></td>
+        <td><%= badge.price %></td>
+        <td><%= badge.image_url %></td>
+        <td><%= badge.category.name %></td>
+        <td><%= link_to 'Mostrar', badge %></td>
+        <td><%= link_to 'Editar', edit_badge_path(badge) %></td>
+        <td><%= link_to 'Excluir', badge, method: :delete, data: { confirm: 'Tem certeza?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
