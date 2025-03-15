@@ -215,7 +215,7 @@
   </style>
 </head>
 <body>
-
+    
   <% if notice %>
     <div class="notice-alert alert alert-success alert-dismissible fade show" role="alert">
       <%= notice %>
@@ -226,10 +226,13 @@
   <div class="page-header">
     <div class="container">
       <div class="row align-items-center">
-        <div class="col-md-8">
-          <h1 class="display-4 fw-bold"><i class="fas fa-medal me-2"></i>Badges</h1>
-          <p class="lead">Explore nossa coleção exclusiva de badges.</p>
-        </div>
+      <div class="col-md-8">
+        <h1 class="display-4 fw-bold">
+          <img src="<%= asset_path('uae.png') %>" alt="Logotipo UAE" style="height: 50px; margin-right: 10px;">
+          União Associativa de Estudantes - Tomar
+        </h1>
+        <p class="lead">Explora a nossa coleção de emblemas.</p>
+      </div>
         <div class="col-md-4 text-md-end">
           <%= link_to new_badge_path, class: "btn-new-badge", data: { aos: "fade-left" } do %>
             <i class="fas fa-plus me-2"></i>Novo Badge
